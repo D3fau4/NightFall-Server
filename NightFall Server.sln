@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30503.244
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NightFall Server", "NightFall Server.csproj", "{731FA5D3-95FF-439B-BEE2-017E16D8E177}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{731FA5D3-95FF-439B-BEE2-017E16D8E177}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{731FA5D3-95FF-439B-BEE2-017E16D8E177}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{731FA5D3-95FF-439B-BEE2-017E16D8E177}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{731FA5D3-95FF-439B-BEE2-017E16D8E177}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {408C016B-1835-4B41-ADAA-FF232E0C8CE2}
+	EndGlobalSection
+EndGlobal
