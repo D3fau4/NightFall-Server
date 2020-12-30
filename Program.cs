@@ -2,9 +2,9 @@
 
 namespace NightFall_Server
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             // args[0] = Firmware folder
             // args[1] = Keyset path

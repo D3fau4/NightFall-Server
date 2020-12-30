@@ -1,14 +1,14 @@
-using System.Text;
-using System.IO;
-using System;
-using System.Linq;
-using Newtonsoft.Json;
 using LibHac;
 using LibHac.FsSystem;
+using Newtonsoft.Json;
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
 
 namespace NightFall_Server
 {
-    class Server
+    internal class Server
     {
         public static void generateJson(string firmware, string pathkey, string firmver, string fwint, string output)
         {
@@ -37,7 +37,7 @@ namespace NightFall_Server
                 writer.WriteEndArray();
                 writer.WritePropertyName("programid");
                 writer.WriteStartObject();
-                Listnca(firmware, keyset, writer);
+                Listnca(firmware, fwint, keyset, writer);
                 writer.WriteEndObject();
                 writer.WriteEnd();
             }
@@ -88,7 +88,7 @@ namespace NightFall_Server
         public static void ListTitleid(string sdfs, Keyset keyset, JsonWriter writer)
         {
             SwitchFs switchFs;
-            var baseFs = new LocalFileSystem(sdfs);
+            LocalFileSystem baseFs = new LocalFileSystem(sdfs);
 
             switchFs = SwitchFs.OpenNcaDirectory(keyset, baseFs);
             string lasttitleid = "";
@@ -103,14 +103,13 @@ namespace NightFall_Server
             }
 
         }
-        public static void Listnca(string sdfs, Keyset keyset, JsonWriter writer)
+        public static void Listnca(string sdfs, string fwint, Keyset keyset, JsonWriter writer)
         {
             SwitchFs switchFs;
-            var baseFs = new LocalFileSystem(sdfs);
+            LocalFileSystem baseFs = new LocalFileSystem(sdfs);
             switchFs = SwitchFs.OpenNcaDirectory(keyset, baseFs);
             string lasttitleid = "";
             string lastncaid = "";
-            bool writevalue = false;
             string type;
             foreach (SwitchFsNca nca in switchFs.Ncas.Values.OrderBy(x => x.Nca.Header.TitleId))
             {
@@ -122,9 +121,15 @@ namespace NightFall_Server
                     writer.WritePropertyName(nca.Nca.Header.ContentType.ToString());
                     writer.WriteValue(nca.NcaId);
                     // solo contiene META
-                    if ("010000000000001B" == nca.Nca.Header.TitleId.ToString("X16") || "0100000000000029" == nca.Nca.Header.TitleId.ToString("X16") || "0100000000000816" == nca.Nca.Header.TitleId.ToString("X16"))
+                    if (int.Parse(fwint) >= 738197944)
                     {
-                        writevalue = false;
+                        if ("0100000000000825" == nca.Nca.Header.TitleId.ToString("X16") || "0100000000000029" == nca.Nca.Header.TitleId.ToString("X16") || "0100000000000816" == nca.Nca.Header.TitleId.ToString("X16"))
+                        {
+                            writer.WriteEnd();
+                        }
+                    }
+                    else if ("010000000000001B" == nca.Nca.Header.TitleId.ToString("X16") || "0100000000000029" == nca.Nca.Header.TitleId.ToString("X16") || "0100000000000816" == nca.Nca.Header.TitleId.ToString("X16"))
+                    {
                         writer.WriteEnd();
                     }
 
@@ -144,7 +149,6 @@ namespace NightFall_Server
                     writer.WritePropertyName(type);
                     writer.WriteValue(nca.NcaId);
                     writer.WriteEnd();
-                    writevalue = true;
                     lastncaid = nca.NcaId;
                     lasttitleid = nca.Nca.Header.TitleId.ToString("X16");
                 }
@@ -153,7 +157,6 @@ namespace NightFall_Server
                     writer.WritePropertyName(nca.Nca.Header.ContentType.ToString());
                     writer.WriteValue(nca.NcaId);
                     writer.WriteEnd();
-                    writevalue = true;
                     lastncaid = nca.NcaId;
                     lasttitleid = nca.Nca.Header.TitleId.ToString("X16");
 
